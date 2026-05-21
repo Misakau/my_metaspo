@@ -30,8 +30,13 @@ OPENAI_BASE_URL=https://your-openai-compatible-endpoint/v1
 ### MetaSPO: Training and Evaluation
 ```bash
 ./main.sh
+# Switch benchmark (must have configs/<DOMAIN>.yaml and datasets/<DOMAIN>/):
+DOMAIN=medmcqa ./main.sh
+# Train only, or test only with an existing checkpoint:
+RUN_TEST_UNSEEN=0 RUN_TEST_TTA=0 ./main.sh
+RUN_TRAIN=0 DOMAIN=medmcqa ./main.sh
 ```
-Refer to `main.sh` for detailed instructions.
+Edit the variables at the top of `main.sh`, or override them on the command line as above.
 
 ### Tasks
 Modify `configs/$DOMAIN.yaml` to set dataset configurations.  
