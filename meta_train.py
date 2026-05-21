@@ -40,6 +40,12 @@ def get_args():
     parser.add_argument("--optim_model_type", type=str, default="openai")
     parser.add_argument("--optim_model_name", type=str, default="gpt-4o-mini")
     parser.add_argument("--optim_model_temperature", type=float, default=1.0)
+    parser.add_argument(
+        "--openai_base_url",
+        type=str,
+        default=None,
+        help="OpenAI-compatible API base URL (overrides OPENAI_BASE_URL in .env)",
+    )
 
     # Task Settings
     parser.add_argument("--task_config_path", type=str, default="./configs/amazon.yaml")
@@ -51,9 +57,11 @@ def get_args():
     args = parser.parse_args()
     args = load_config(args, args.task_config_path)
 
-    # put your openai api key in .env file
+    # put your openai api key and optional base url in .env file
     load_dotenv()
     args.openai_api_key = os.getenv("OPENAI_API_KEY")
+    if args.openai_base_url is None:
+        args.openai_base_url = os.getenv("OPENAI_BASE_URL") or os.getenv("OPENAI_API_BASE")
 
     return args
 

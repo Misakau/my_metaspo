@@ -18,7 +18,14 @@ conda create -n metaspo python=3.10 -y
 conda activate metaspo
 pip install -r requirements.txt
 ```
-Ensure your OPENAI_API_KEY is stored in the .env file.
+Store your OpenAI credentials in the `.env` file:
+
+```
+OPENAI_API_KEY=your_api_key
+OPENAI_BASE_URL=https://your-openai-compatible-endpoint/v1
+```
+
+`OPENAI_BASE_URL` is optional (defaults to the official OpenAI API). You can also pass `--openai_base_url` on the command line to override the env value.
 
 ### MetaSPO: Training and Evaluation
 ```bash

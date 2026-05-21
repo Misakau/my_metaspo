@@ -13,13 +13,17 @@ class OpenAIModel:
         model_name: str,
         api_key: str,
         temperature: float,
+        base_url: str | None = None,
         batch_mode: bool = True,
         **kwargs,
     ):
         if api_key is None:
             raise ValueError(f"api_key error: {api_key}")
+        client_kwargs = {"api_key": api_key}
+        if base_url:
+            client_kwargs["base_url"] = base_url.rstrip("/")
         try:
-            self.model = OpenAI(api_key=api_key)
+            self.model = OpenAI(**client_kwargs)
         except Exception as e:
             print(f"Init openai client error: \n{e}")
             raise RuntimeError("Failed to initialize OpenAI client") from e
