@@ -34,6 +34,11 @@ def get_args():
     parser.add_argument("--base_model_type", type=str, required=True)
     parser.add_argument("--base_model_name", type=str, required=True)
     parser.add_argument("--base_model_temperature", type=float, default=0.0)
+    parser.add_argument(
+        "--enable_thinking",
+        action="store_true",
+        help="Enable Qwen3 thinking mode (default: disabled). Only applies to Qwen3 vLLM models.",
+    )
 
     # Optimizer Model Settings
     parser.add_argument("--optim_model_type", type=str, default="openai")

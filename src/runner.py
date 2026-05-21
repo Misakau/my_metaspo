@@ -96,6 +96,7 @@ class Runner:
             "model_name": args.base_model_name,
             "temperature": args.base_model_temperature,
             "api_key": args.openai_api_key,
+            "enable_thinking": getattr(args, "enable_thinking", False),
         }
 
         optim_model_setting = {
@@ -103,6 +104,7 @@ class Runner:
             "model_name": args.optim_model_name,
             "temperature": args.optim_model_temperature,
             "api_key": args.openai_api_key,
+            "enable_thinking": getattr(args, "enable_thinking", False),
         }
 
         task_setting = {

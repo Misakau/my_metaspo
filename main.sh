@@ -1,5 +1,6 @@
 MODEL_TYPE="vllm" # openai / vllm 
-MODEL_NAME="llama3.2_3B" # gpt-4o-mini / llama3.1_8B / llama3.2_3B / Qwen2.5_7B 
+MODEL_NAME="Qwen3_8B"
+# "llama3.2_3B" # gpt-4o-mini / llama3.1_8B / llama3.2_3B / Qwen2.5_7B / Qwen3_8B
 
 METHOD='metaspo'
 DOMAIN='amazon'

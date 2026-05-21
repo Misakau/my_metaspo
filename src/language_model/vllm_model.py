@@ -7,6 +7,7 @@ MODEL_DICT = {
     "llama3.1_8B": "meta-llama/Meta-Llama-3.1-8B-Instruct",
     "llama3.2_3B": "meta-llama/Llama-3.2-3B-Instruct",
     "Qwen2.5_7B": "Qwen/Qwen2.5-7B-Instruct",
+    "Qwen3_8B": "Qwen/Qwen3-8B",
 }
 
 
@@ -19,10 +20,12 @@ class VLLM:
         dtype: str = "float16",
         num_gpus: int = torch.cuda.device_count(),
         gpu_memory_utilization: float = 0.90,
+        enable_thinking: bool = False,
         **kwargs,
     ):
         self.model_name = self._get_model_name(model_name)
         self.temperature = temperature
+        self.enable_thinking = enable_thinking
         self.params = self._create_sampling_params(max_model_len)
         self.tokenizer = self._initialize_tokenizer()
         self.model = self._initialize_model(max_model_len, dtype, num_gpus, gpu_memory_utilization)
@@ -67,8 +70,24 @@ class VLLM:
         request_outputs = self.model.generate(batch_prompts, self.params, use_tqdm=use_tqdm)
         return self.postprocess_output(request_outputs)
 
+    def _is_qwen3_model(self) -> bool:
+        return "qwen3" in self.model_name.lower()
+
+    def _chat_template_kwargs(self) -> dict:
+        if self._is_qwen3_model():
+            return {"enable_thinking": self.enable_thinking}
+        return {}
+
+    def _apply_chat_template(self, prompt, **kwargs) -> str:
+        return self.tokenizer.apply_chat_template(
+            prompt,
+            tokenize=False,
+            **self._chat_template_kwargs(),
+            **kwargs,
+        )
+
     def generate(self, prompt: str) -> str:
-        input = self.tokenizer.apply_chat_template(prompt, tokenize=False)
+        input = self._apply_chat_template(prompt)
         request_outputs = self.model.generate([input], self.params)
         return self.postprocess_output(request_outputs)[0]
 
@@ -77,6 +96,6 @@ class VLLM:
 
     def prepare_batch_prompts(self, batch_prompts) -> List[str]:
         return [
-            self.tokenizer.apply_chat_template(prompt, tokenize=False, add_generation_prompt=True)
+            self._apply_chat_template(prompt, add_generation_prompt=True)
             for prompt in batch_prompts
         ]
