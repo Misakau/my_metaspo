@@ -7,6 +7,7 @@ MODEL_DICT = {
     "llama3.1_8B": "meta-llama/Meta-Llama-3.1-8B-Instruct",
     "llama3.2_3B": "meta-llama/Llama-3.2-3B-Instruct",
     "Qwen2.5_7B": "Qwen/Qwen2.5-7B-Instruct",
+    "Qwen3_4B_Instruct": "Qwen/Qwen3-4B-Instruct-2507",
     "Qwen3_8B": "Qwen/Qwen3-8B",
 }
 
